@@ -1,131 +1,163 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
 
-class NourDocBrandHeader extends StatelessWidget {
-  const NourDocBrandHeader({required this.step, required this.onBack, super.key});
+class SignupHeroHeader extends StatelessWidget {
+  const SignupHeroHeader({
+    required this.step,
+    required this.assetPath,
+    required this.title,
+    required this.subtitle,
+    required this.direction,
+    this.onBack,
+    super.key,
+  });
 
   final int step;
+  final String assetPath;
+  final String title;
+  final String subtitle;
+  final int direction;
   final VoidCallback? onBack;
 
   @override
-  Widget build(BuildContext context) => Stack(
-    alignment: Alignment.topCenter,
+  Widget build(BuildContext context) => Column(
     children: [
-      const Positioned(
-        top: 64,
-        right: 34,
-        child: Icon(Icons.add_rounded, size: 28, color: Color(0x12286252)),
-      ),
-      const Positioned(
-        top: 68,
-        left: 24,
-        child: SizedBox(
-          width: 56,
-          height: 42,
-          child: CustomPaint(painter: _MedicalCurvePainter()),
+      SizedBox(
+        height: 48,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              if (onBack != null)
+                IconButton(
+                  onPressed: onBack,
+                  icon: const Icon(Icons.arrow_back_rounded),
+                  color: AppColors.brand,
+                  tooltip: 'Back',
+                )
+              else
+                const SizedBox(width: 48),
+              const Spacer(),
+              Text(
+                'Step $step of 3',
+                style: const TextStyle(
+                  color: AppColors.mutedText,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
         ),
       ),
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 52,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SizedBox(
+          height: 155,
+          width: double.infinity,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            reverseDuration: const Duration(milliseconds: 260),
+            transitionBuilder: (child, animation) {
+              final offset =
+                  Tween<Offset>(
+                    begin: Offset(direction * .05, 0),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    ),
+                  );
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(position: offset, child: child),
+              );
+            },
+            child: ClipRRect(
+              key: ValueKey(assetPath),
+              borderRadius: BorderRadius.circular(24),
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  IconButton(
-                    onPressed: onBack,
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    color: AppColors.brand,
-                    tooltip: step == 1 ? null : 'Back',
+                  Image.asset(
+                    assetPath,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.centerRight,
                   ),
-                  const Spacer(),
-                  Text(
-                    'Step $step of 3',
-                    style: const TextStyle(
-                      color: AppColors.mutedText,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFF7FAF9),
+                          Color(0xEAF7FAF9),
+                          Color(0x55F7FAF9),
+                          Color(0x00F7FAF9),
+                        ],
+                        stops: [0, .38, .65, 1],
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 15, 18, 16),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 220),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                'assets/images/logo.png',
+                                height: 28,
+                                fit: BoxFit.contain,
+                              ),
+                              const SizedBox(width: 6),
+                              const Text(
+                                'NourDoc',
+                                style: TextStyle(
+                                  color: AppColors.text,
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Text(
+                            title,
+                            style: const TextStyle(
+                              color: AppColors.text,
+                              fontSize: 27,
+                              height: 1.08,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            subtitle,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: AppColors.mutedText,
+                              fontSize: 13.5,
+                              height: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 82,
-                height: 70,
-                decoration: const BoxDecoration(
-                  gradient: RadialGradient(
-                    colors: [Color(0x14286252), Color(0x00286252)],
-                  ),
-                ),
-              ),
-              Image.asset(
-                'assets/images/logo.png',
-                height: 60,
-                fit: BoxFit.contain,
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'NourDoc',
-            style: TextStyle(
-              fontSize: 27,
-              height: 1,
-              fontWeight: FontWeight.w800,
-              color: AppColors.text,
-            ),
-          ),
-          const SizedBox(height: 3),
-          const Text(
-            'Empowering Doctors with AI',
-            style: TextStyle(fontSize: 12.5, color: AppColors.brand),
-          ),
-        ],
+        ),
       ),
     ],
   );
-}
-
-class _MedicalCurvePainter extends CustomPainter {
-  const _MedicalCurvePainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0x14286252)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5
-      ..strokeCap = StrokeCap.round;
-    final path = Path()
-      ..moveTo(2, size.height * .2)
-      ..cubicTo(
-        size.width * .28,
-        size.height * .05,
-        size.width * .28,
-        size.height * .88,
-        size.width * .62,
-        size.height * .75,
-      )
-      ..cubicTo(
-        size.width * .82,
-        size.height * .68,
-        size.width * .82,
-        size.height * .4,
-        size.width - 2,
-        size.height * .42,
-      );
-    canvas.drawPath(path, paint);
-    canvas.drawCircle(Offset(size.width - 3, size.height * .42), 3.5, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

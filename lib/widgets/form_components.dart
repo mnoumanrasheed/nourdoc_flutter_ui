@@ -61,7 +61,11 @@ class CustomTextField extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           hintText: hint,
-          prefixIcon: prefix ?? (leadingIcon == null ? null : Icon(leadingIcon, color: AppColors.mutedText)),
+          prefixIcon:
+              prefix ??
+              (leadingIcon == null
+                  ? null
+                  : Icon(leadingIcon, color: AppColors.mutedText)),
         ),
       ),
     ],
@@ -100,7 +104,9 @@ class CustomDropdown extends StatelessWidget {
         hint: Text(hint),
         icon: const Icon(Icons.keyboard_arrow_down_rounded),
         decoration: InputDecoration(
-          prefixIcon: leadingIcon == null ? null : Icon(leadingIcon, color: AppColors.mutedText),
+          prefixIcon: leadingIcon == null
+              ? null
+              : Icon(leadingIcon, color: AppColors.mutedText),
         ),
         items: items
             .map(
@@ -146,14 +152,19 @@ class CountryPickerField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: 'Select your country',
               errorText: state.errorText,
-              prefixIcon: const Icon(Icons.public_rounded, color: AppColors.mutedText),
+              prefixIcon: const Icon(
+                Icons.public_rounded,
+                color: AppColors.mutedText,
+              ),
               suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded),
             ),
             child: Text(
               state.value ?? 'Select your country',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: state.value == null ? AppColors.mutedText : AppColors.text,
+                color: state.value == null
+                    ? AppColors.mutedText
+                    : AppColors.text,
               ),
             ),
           ),
@@ -162,7 +173,10 @@ class CountryPickerField extends StatelessWidget {
     ],
   );
 
-  Future<void> _showPicker(BuildContext context, FormFieldState<String> state) async {
+  Future<void> _showPicker(
+    BuildContext context,
+    FormFieldState<String> state,
+  ) async {
     final selected = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
@@ -243,22 +257,38 @@ class _CountryPickerSheetState extends State<_CountryPickerSheet> {
                 itemBuilder: (context, index) {
                   if (index == matches.length) {
                     return ListTile(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                       leading: const CircleAvatar(
                         backgroundColor: AppColors.successSurface,
-                        child: Icon(Icons.edit_outlined, color: AppColors.brand),
+                        child: Icon(
+                          Icons.edit_outlined,
+                          color: AppColors.brand,
+                        ),
                       ),
-                      title: const Text('Other', style: TextStyle(fontWeight: FontWeight.w700)),
+                      title: const Text(
+                        'Other',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
                       subtitle: const Text('Enter your country manually'),
                       onTap: () => Navigator.pop(context, 'Other'),
                     );
                   }
                   final country = matches[index];
                   return ListTile(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    leading: Text(country.flag, style: const TextStyle(fontSize: 22)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    leading: Text(
+                      country.flag,
+                      style: const TextStyle(fontSize: 22),
+                    ),
                     title: Text(country.name, overflow: TextOverflow.ellipsis),
-                    trailing: Text('+${country.dialCode}', style: const TextStyle(color: AppColors.mutedText)),
+                    trailing: Text(
+                      '+${country.dialCode}',
+                      style: const TextStyle(color: AppColors.mutedText),
+                    ),
                     onTap: () => Navigator.pop(context, country.name),
                   );
                 },
@@ -356,7 +386,9 @@ class _PrimaryButtonState extends State<PrimaryButton> {
           style: FilledButton.styleFrom(
             backgroundColor: AppColors.brand,
             foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
           child: Text(
             widget.label,

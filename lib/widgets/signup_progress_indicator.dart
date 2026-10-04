@@ -33,13 +33,19 @@ class SignupProgressIndicator extends StatelessWidget {
               decoration: BoxDecoration(
                 color: complete || current ? AppColors.brand : Colors.white,
                 border: Border.all(
-                  color: complete || current ? AppColors.brand : AppColors.inactive,
+                  color: complete || current
+                      ? AppColors.brand
+                      : AppColors.inactive,
                   width: 2,
                 ),
                 shape: BoxShape.circle,
               ),
               child: complete
-                  ? const Icon(Icons.check_rounded, color: Colors.white, size: 19)
+                  ? const Icon(
+                      Icons.check_rounded,
+                      color: Colors.white,
+                      size: 19,
+                    )
                   : Center(
                       child: Text(
                         '$step',
